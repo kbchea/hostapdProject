@@ -55,6 +55,7 @@ int hostapd_for_each_interface(struct hapd_interfaces *interfaces,
 			       int (*cb)(struct hostapd_iface *iface,
 					 void *ctx), void *ctx)
 {
+	printf("[KBCHEA] hostapd hostapd_for_each_interface");
 	size_t i;
 	int ret;
 
@@ -70,6 +71,7 @@ int hostapd_for_each_interface(struct hapd_interfaces *interfaces,
 
 static void hostapd_reload_bss(struct hostapd_data *hapd)
 {
+	printf("[KBCHEA] hostapd hostapd_reload_bss");
 	struct hostapd_ssid *ssid;
 
 #ifndef CONFIG_NO_RADIUS
@@ -130,6 +132,7 @@ static void hostapd_reload_bss(struct hostapd_data *hapd)
 
 static void hostapd_clear_old(struct hostapd_iface *iface)
 {
+	printf("[KBCHEA] hostapd hostapd_clear_old");
 	size_t j;
 
 	/*
@@ -152,6 +155,7 @@ static void hostapd_clear_old(struct hostapd_iface *iface)
 
 int hostapd_reload_config(struct hostapd_iface *iface)
 {
+	printf("[KBCHEA] hostapd hostapd_reload_config");
 	struct hostapd_data *hapd = iface->bss[0];
 	struct hostapd_config *newconf, *oldconf;
 	size_t j;
@@ -205,6 +209,7 @@ int hostapd_reload_config(struct hostapd_iface *iface)
 static void hostapd_broadcast_key_clear_iface(struct hostapd_data *hapd,
 					      char *ifname)
 {
+	printf("[KBCHEA] hostapd hostapd_broadcast_key_clear_iface");
 	int i;
 
 	for (i = 0; i < NUM_WEP_KEYS; i++) {
@@ -233,6 +238,7 @@ static void hostapd_broadcast_key_clear_iface(struct hostapd_data *hapd,
 
 static int hostapd_broadcast_wep_clear(struct hostapd_data *hapd)
 {
+	printf("[KBCHEA] hostapd hostapd_broadcast_wep_clear");
 	hostapd_broadcast_key_clear_iface(hapd, hapd->conf->iface);
 	return 0;
 }
@@ -240,6 +246,7 @@ static int hostapd_broadcast_wep_clear(struct hostapd_data *hapd)
 
 static int hostapd_broadcast_wep_set(struct hostapd_data *hapd)
 {
+	printf("[KBCHEA] hostapd hostapd_broadcast_wep_set");
 	int errors = 0, idx;
 	struct hostapd_ssid *ssid = &hapd->conf->ssid;
 
@@ -259,6 +266,7 @@ static int hostapd_broadcast_wep_set(struct hostapd_data *hapd)
 
 static void hostapd_free_hapd_data(struct hostapd_data *hapd)
 {
+	printf("[KBCHEA] hostapd hostapd_free_hapd_data");
 	os_free(hapd->probereq_cb);
 	hapd->probereq_cb = NULL;
 	hapd->num_probereq_cb = 0;
@@ -347,6 +355,7 @@ static void hostapd_free_hapd_data(struct hostapd_data *hapd)
  */
 static void hostapd_cleanup(struct hostapd_data *hapd)
 {
+	printf("[KBCHEA] hostapd hostapd_cleanup");
 	wpa_printf(MSG_DEBUG, "%s(hapd=%p (%s))", __func__, hapd,
 		   hapd->conf->iface);
 	if (hapd->iface->interfaces &&
@@ -358,6 +367,7 @@ static void hostapd_cleanup(struct hostapd_data *hapd)
 
 static void sta_track_deinit(struct hostapd_iface *iface)
 {
+	printf("[KBCHEA] hostapd sta_track_deinit");
 	struct hostapd_sta_info *info;
 
 	if (!iface->num_sta_seen)
@@ -374,6 +384,7 @@ static void sta_track_deinit(struct hostapd_iface *iface)
 
 static void hostapd_cleanup_iface_partial(struct hostapd_iface *iface)
 {
+	printf("[KBCHEA] hostapd hostapd_cleanup_iface_partial");
 	wpa_printf(MSG_DEBUG, "%s(%p)", __func__, iface);
 #ifdef CONFIG_IEEE80211N
 #ifdef NEED_AP_MLME
@@ -400,6 +411,7 @@ static void hostapd_cleanup_iface_partial(struct hostapd_iface *iface)
  */
 static void hostapd_cleanup_iface(struct hostapd_iface *iface)
 {
+	printf("[KBCHEA] hostapd hostapd_cleanup_iface");
 	wpa_printf(MSG_DEBUG, "%s(%p)", __func__, iface);
 	eloop_cancel_timeout(channel_list_update_timeout, iface, NULL);
 
@@ -416,6 +428,7 @@ static void hostapd_cleanup_iface(struct hostapd_iface *iface)
 
 static void hostapd_clear_wep(struct hostapd_data *hapd)
 {
+	printf("[KBCHEA] hostapd hostapd_clear_wep");
 	if (hapd->drv_priv && !hapd->iface->driver_ap_teardown) {
 		hostapd_set_privacy(hapd, 0);
 		hostapd_broadcast_wep_clear(hapd);
@@ -425,6 +438,7 @@ static void hostapd_clear_wep(struct hostapd_data *hapd)
 
 static int hostapd_setup_encryption(char *iface, struct hostapd_data *hapd)
 {
+	printf("[KBCHEA] hostapd hostapd_setup_encryption");
 	int i;
 
 	hostapd_broadcast_wep_set(hapd);
@@ -461,6 +475,7 @@ static int hostapd_setup_encryption(char *iface, struct hostapd_data *hapd)
 
 static int hostapd_flush_old_stations(struct hostapd_data *hapd, u16 reason)
 {
+	printf("[KBCHEA] hostapd hostapd_flush_old_stations");
 	int ret = 0;
 	u8 addr[ETH_ALEN];
 
@@ -488,6 +503,7 @@ static int hostapd_flush_old_stations(struct hostapd_data *hapd, u16 reason)
 
 static void hostapd_bss_deinit_no_free(struct hostapd_data *hapd)
 {
+	printf("[KBCHEA] hostapd hostapd_bss_deinit_no_free");
 	hostapd_free_stas(hapd);
 	hostapd_flush_old_stations(hapd, WLAN_REASON_DEAUTH_LEAVING);
 	hostapd_clear_wep(hapd);
@@ -503,6 +519,7 @@ static void hostapd_bss_deinit_no_free(struct hostapd_data *hapd)
  */
 static int hostapd_validate_bssid_configuration(struct hostapd_iface *iface)
 {
+	printf("[KBCHEA] hostapd hostapd_validate_bssid_configuration");
 	u8 mask[ETH_ALEN] = { 0 };
 	struct hostapd_data *hapd = iface->bss[0];
 	unsigned int i = iface->conf->num_bss, bits = 0, j;
@@ -590,6 +607,7 @@ skip_mask_ext:
 
 static int mac_in_conf(struct hostapd_config *conf, const void *a)
 {
+	printf("[KBCHEA] hostapd mac_in_conf");
 	size_t i;
 
 	for (i = 0; i < conf->num_bss; i++) {
@@ -607,6 +625,7 @@ static int mac_in_conf(struct hostapd_config *conf, const void *a)
 static int hostapd_das_nas_mismatch(struct hostapd_data *hapd,
 				    struct radius_das_attrs *attr)
 {
+	printf("[KBCHEA] hostapd hostapd_das_nas_mismatch");
 	if (attr->nas_identifier &&
 	    (!hapd->conf->nas_identifier ||
 	     os_strlen(hapd->conf->nas_identifier) !=
@@ -643,6 +662,7 @@ static struct sta_info * hostapd_das_find_sta(struct hostapd_data *hapd,
 					      struct radius_das_attrs *attr,
 					      int *multi)
 {
+	printf("[KBCHEA] hostapd hostapd_das_find_sta");
 	struct sta_info *selected, *sta;
 	char buf[128];
 	int num_attr = 0;
@@ -821,6 +841,7 @@ static struct sta_info * hostapd_das_find_sta(struct hostapd_data *hapd,
 static int hostapd_das_disconnect_pmksa(struct hostapd_data *hapd,
 					struct radius_das_attrs *attr)
 {
+	printf("[KBCHEA] hostapd hostapd_das_disconnect_pmksa");
 	if (!hapd->wpa_auth)
 		return -1;
 	return wpa_auth_radius_das_disconnect_pmksa(hapd->wpa_auth, attr);
@@ -830,6 +851,7 @@ static int hostapd_das_disconnect_pmksa(struct hostapd_data *hapd,
 static enum radius_das_res
 hostapd_das_disconnect(void *ctx, struct radius_das_attrs *attr)
 {
+	printf("[KBCHEA] hostapd hostapd_das_disconnect");
 	struct hostapd_data *hapd = ctx;
 	struct sta_info *sta;
 	int multi;
@@ -880,6 +902,7 @@ hostapd_das_disconnect(void *ctx, struct radius_das_attrs *attr)
  */
 static int hostapd_setup_bss(struct hostapd_data *hapd, int first)
 {
+	printf("[KBCHEA] hostapd hostapd_setup_bss");
 	struct hostapd_bss_config *conf = hapd->conf;
 	u8 ssid[SSID_MAX_LEN + 1];
 	int ssid_len, set_ssid;
@@ -1122,6 +1145,7 @@ static int hostapd_setup_bss(struct hostapd_data *hapd, int first)
 
 static void hostapd_tx_queue_params(struct hostapd_iface *iface)
 {
+	printf("[KBCHEA] hostapd hostapd_tx_queue_params");
 	struct hostapd_data *hapd = iface->bss[0];
 	int i;
 	struct hostapd_tx_queue_params *p;
@@ -1148,6 +1172,7 @@ static int hostapd_set_acl_list(struct hostapd_data *hapd,
 				struct mac_acl_entry *mac_acl,
 				int n_entries, u8 accept_acl)
 {
+	printf("[KBCHEA] hostapd hostapd_set_acl_list");
 	struct hostapd_acl_params *acl_params;
 	int i, err;
 
@@ -1173,6 +1198,7 @@ static int hostapd_set_acl_list(struct hostapd_data *hapd,
 
 static void hostapd_set_acl(struct hostapd_data *hapd)
 {
+	printf("[KBCHEA] hostapd hostapd_set_acl");
 	struct hostapd_config *conf = hapd->iconf;
 	int err;
 	u8 accept_acl;
@@ -1204,6 +1230,7 @@ static void hostapd_set_acl(struct hostapd_data *hapd)
 
 static int start_ctrl_iface_bss(struct hostapd_data *hapd)
 {
+	printf("[KBCHEA] hostapd start_ctrl_iface_bss");
 	if (!hapd->iface->interfaces ||
 	    !hapd->iface->interfaces->ctrl_iface_init)
 		return 0;
@@ -1221,6 +1248,7 @@ static int start_ctrl_iface_bss(struct hostapd_data *hapd)
 
 static int start_ctrl_iface(struct hostapd_iface *iface)
 {
+	printf("[KBCHEA] hostapd start_ctrl_iface");
 	size_t i;
 
 	if (!iface->interfaces || !iface->interfaces->ctrl_iface_init)
@@ -1242,6 +1270,7 @@ static int start_ctrl_iface(struct hostapd_iface *iface)
 
 static void channel_list_update_timeout(void *eloop_ctx, void *timeout_ctx)
 {
+	printf("[KBCHEA] hostapd channel_list_update_timeout");
 	struct hostapd_iface *iface = eloop_ctx;
 
 	if (!iface->wait_channel_update) {
@@ -1260,6 +1289,7 @@ static void channel_list_update_timeout(void *eloop_ctx, void *timeout_ctx)
 
 void hostapd_channel_list_updated(struct hostapd_iface *iface, int initiator)
 {
+	printf("[KBCHEA] hostapd hostapd_channel_list_updated");
 	if (!iface->wait_channel_update || initiator != REGDOM_SET_BY_USER)
 		return;
 
@@ -1271,6 +1301,7 @@ void hostapd_channel_list_updated(struct hostapd_iface *iface, int initiator)
 
 static int setup_interface(struct hostapd_iface *iface)
 {
+	printf("[KBCHEA] hostapd setup_interface");
 	struct hostapd_data *hapd = iface->bss[0];
 	size_t i;
 
@@ -1344,6 +1375,7 @@ static int setup_interface(struct hostapd_iface *iface)
 
 static int setup_interface2(struct hostapd_iface *iface)
 {
+	printf("[KBCHEA] hostapd setup_interface2");
 	iface->wait_channel_update = 0;
 
 	if (hostapd_get_hw_features(iface)) {
@@ -1519,6 +1551,7 @@ void fst_hostapd_fill_iface_obj(struct hostapd_data *hapd,
  */
 int hostapd_setup_interface_complete(struct hostapd_iface *iface, int err)
 {
+	printf("[KBCHEA] hostapd hostapd_setup_interface_complete");
 	struct hostapd_data *hapd = iface->bss[0];
 	size_t j;
 	u8 *prev_addr;
@@ -1737,6 +1770,7 @@ fail:
  */
 int hostapd_setup_interface(struct hostapd_iface *iface)
 {
+	printf("[KBCHEA] hostapd hostapd_setup_interface");
 	int ret;
 
 	ret = setup_interface(iface);
@@ -1766,6 +1800,7 @@ hostapd_alloc_bss_data(struct hostapd_iface *hapd_iface,
 		       struct hostapd_config *conf,
 		       struct hostapd_bss_config *bss)
 {
+	printf("[KBCHEA] hostapd hostapd_alloc_bss_data");
 	struct hostapd_data *hapd;
 
 	hapd = os_zalloc(sizeof(*hapd));
@@ -1785,6 +1820,7 @@ hostapd_alloc_bss_data(struct hostapd_iface *hapd_iface,
 
 static void hostapd_bss_deinit(struct hostapd_data *hapd)
 {
+	printf("[KBCHEA] hostapd hostapd_bss_deinit");
 	wpa_printf(MSG_DEBUG, "%s: deinit bss %s", __func__,
 		   hapd->conf->iface);
 	hostapd_bss_deinit_no_free(hapd);
@@ -1795,6 +1831,7 @@ static void hostapd_bss_deinit(struct hostapd_data *hapd)
 
 void hostapd_interface_deinit(struct hostapd_iface *iface)
 {
+	printf("[KBCHEA] hostapd hostapd_interface_deinit");
 	int j;
 
 	wpa_printf(MSG_DEBUG, "%s(%p)", __func__, iface);
@@ -1826,6 +1863,7 @@ void hostapd_interface_deinit(struct hostapd_iface *iface)
 
 void hostapd_interface_free(struct hostapd_iface *iface)
 {
+	printf("[KBCHEA] hostapd hostapd_interface_free");
 	size_t j;
 	wpa_printf(MSG_DEBUG, "%s(%p)", __func__, iface);
 	for (j = 0; j < iface->num_bss; j++) {
@@ -1849,6 +1887,7 @@ void hostapd_interface_free(struct hostapd_iface *iface)
 struct hostapd_iface * hostapd_init(struct hapd_interfaces *interfaces,
 				    const char *config_file)
 {
+	printf("[KBCHEA] hostapd hostapd_init");
 	struct hostapd_iface *hapd_iface = NULL;
 	struct hostapd_config *conf = NULL;
 	struct hostapd_data *hapd;
@@ -1902,6 +1941,7 @@ fail:
 
 static int ifname_in_use(struct hapd_interfaces *interfaces, const char *ifname)
 {
+	printf("[KBCHEA] hostapd ifname_in_use");
 	size_t i, j;
 
 	for (i = 0; i < interfaces->count; i++) {
@@ -1932,6 +1972,8 @@ struct hostapd_iface *
 hostapd_interface_init_bss(struct hapd_interfaces *interfaces, const char *phy,
 			   const char *config_fname, int debug)
 {
+
+	printf("[KBCHEA] hostapd 1935 hostapd_interface_init_bss");
 	struct hostapd_iface *new_iface = NULL, *iface = NULL;
 	struct hostapd_data *hapd;
 	int k;
@@ -2036,6 +2078,7 @@ hostapd_interface_init_bss(struct hapd_interfaces *interfaces, const char *phy,
 
 void hostapd_interface_deinit_free(struct hostapd_iface *iface)
 {
+	printf("[KBCHEA] hostapd hostapd_interface_deinit_free");
 	const struct wpa_driver_ops *driver;
 	void *drv_priv;
 
@@ -2062,6 +2105,7 @@ static void hostapd_deinit_driver(const struct wpa_driver_ops *driver,
 				  void *drv_priv,
 				  struct hostapd_iface *hapd_iface)
 {
+	printf("[KBCHEA] hostapd hostapd_deinit_driver");
 	size_t j;
 
 	wpa_printf(MSG_DEBUG, "%s: driver=%p drv_priv=%p -> hapd_deinit",
@@ -2081,6 +2125,7 @@ static void hostapd_deinit_driver(const struct wpa_driver_ops *driver,
 
 int hostapd_enable_iface(struct hostapd_iface *hapd_iface)
 {
+	printf("[KBCHEA] hostapd hostapd_enable_iface");
 	size_t j;
 
 	if (hapd_iface->bss[0]->drv_priv != NULL) {
@@ -2117,6 +2162,7 @@ int hostapd_enable_iface(struct hostapd_iface *hapd_iface)
 
 int hostapd_reload_iface(struct hostapd_iface *hapd_iface)
 {
+	printf("[KBCHEA] hostapd hostapd_reload_iface");
 	size_t j;
 
 	wpa_printf(MSG_DEBUG, "Reload interface %s",
@@ -2137,6 +2183,7 @@ int hostapd_reload_iface(struct hostapd_iface *hapd_iface)
 
 int hostapd_disable_iface(struct hostapd_iface *hapd_iface)
 {
+	printf("[KBCHEA] hostapd hostapd_disable_iface");
 	size_t j;
 	const struct wpa_driver_ops *driver;
 	void *drv_priv;
@@ -2182,6 +2229,7 @@ int hostapd_disable_iface(struct hostapd_iface *hapd_iface)
 static struct hostapd_iface *
 hostapd_iface_alloc(struct hapd_interfaces *interfaces)
 {
+	printf("[KBCHEA] hostapd hostapd_iface_alloc");
 	struct hostapd_iface **iface, *hapd_iface;
 
 	iface = os_realloc_array(interfaces->iface, interfaces->count + 1,
@@ -2207,6 +2255,7 @@ static struct hostapd_config *
 hostapd_config_alloc(struct hapd_interfaces *interfaces, const char *ifname,
 		     const char *ctrl_iface, const char *driver)
 {
+	printf("[KBCHEA] hostapd hostapd_config_alloc");
 	struct hostapd_bss_config *bss;
 	struct hostapd_config *conf;
 
@@ -2261,6 +2310,7 @@ skip:
 static int hostapd_data_alloc(struct hostapd_iface *hapd_iface,
 			      struct hostapd_config *conf)
 {
+	printf("[KBCHEA] hostapd hostapd_data_alloc");
 	size_t i;
 	struct hostapd_data *hapd;
 
@@ -2294,6 +2344,7 @@ static int hostapd_data_alloc(struct hostapd_iface *hapd_iface,
 
 int hostapd_add_iface(struct hapd_interfaces *interfaces, char *buf)
 {
+	printf("[KBCHEA] hostapd hostapd_add_iface");
 	struct hostapd_config *conf = NULL;
 	struct hostapd_iface *hapd_iface = NULL, *new_iface = NULL;
 	struct hostapd_data *hapd;
@@ -2465,6 +2516,7 @@ fail:
 
 static int hostapd_remove_bss(struct hostapd_iface *iface, unsigned int idx)
 {
+	printf("[KBCHEA] hostapd hostapd_remove_bss");
 	size_t i;
 
 	wpa_printf(MSG_INFO, "Remove BSS '%s'", iface->conf->bss[idx]->iface);
@@ -2499,6 +2551,7 @@ static int hostapd_remove_bss(struct hostapd_iface *iface, unsigned int idx)
 
 int hostapd_remove_iface(struct hapd_interfaces *interfaces, char *buf)
 {
+	printf("[KBCHEA] hostapd hostapd_remove_iface");
 	struct hostapd_iface *hapd_iface;
 	size_t i, j, k = 0;
 
@@ -2550,6 +2603,7 @@ int hostapd_remove_iface(struct hapd_interfaces *interfaces, char *buf)
 void hostapd_new_assoc_sta(struct hostapd_data *hapd, struct sta_info *sta,
 			   int reassoc)
 {
+	printf("[KBCHEA] hostapd hostapd_new_assoc_sta");
 	if (hapd->tkip_countermeasures) {
 		hostapd_drv_sta_deauth(hapd, sta->addr,
 				       WLAN_REASON_MICHAEL_MIC_FAILURE);
@@ -2626,6 +2680,7 @@ const char * hostapd_state_text(enum hostapd_iface_state s)
 
 void hostapd_set_state(struct hostapd_iface *iface, enum hostapd_iface_state s)
 {
+	printf("[KBCHEA] hostapd hostapd_set_state");
 	wpa_printf(MSG_INFO, "%s: interface state %s->%s",
 		   iface->conf->bss[0]->iface, hostapd_state_text(iface->state),
 		   hostapd_state_text(s));
@@ -2637,6 +2692,7 @@ void hostapd_set_state(struct hostapd_iface *iface, enum hostapd_iface_state s)
 
 static void free_beacon_data(struct beacon_data *beacon)
 {
+	printf("[KBCHEA] hostapd free_beacon_data");
 	os_free(beacon->head);
 	beacon->head = NULL;
 	os_free(beacon->tail);
@@ -2655,6 +2711,7 @@ static void free_beacon_data(struct beacon_data *beacon)
 static int hostapd_build_beacon_data(struct hostapd_data *hapd,
 				     struct beacon_data *beacon)
 {
+	printf("[KBCHEA] hostapd hostapd_build_beacon_data");
 	struct wpabuf *beacon_extra, *proberesp_extra, *assocresp_extra;
 	struct wpa_driver_ap_params params;
 	int ret;
@@ -2753,6 +2810,7 @@ static int hostapd_change_config_freq(struct hostapd_data *hapd,
 				      struct hostapd_freq_params *params,
 				      struct hostapd_freq_params *old_params)
 {
+	printf("[KBCHEA] hostapd hostapd_change_config_freq");
 	int channel;
 
 	if (!params->channel) {
@@ -2784,6 +2842,7 @@ static int hostapd_change_config_freq(struct hostapd_data *hapd,
 static int hostapd_fill_csa_settings(struct hostapd_data *hapd,
 				     struct csa_settings *settings)
 {
+	printf("[KBCHEA] hostapd hostapd_fill_csa_settings");
 	struct hostapd_iface *iface = hapd->iface;
 	struct hostapd_freq_params old_freq;
 	int ret;
@@ -2827,6 +2886,7 @@ static int hostapd_fill_csa_settings(struct hostapd_data *hapd,
 
 void hostapd_cleanup_cs_params(struct hostapd_data *hapd)
 {
+	printf("[KBCHEA] hostapd hostapd_cleanup_cs_params");
 	os_memset(&hapd->cs_freq_params, 0, sizeof(hapd->cs_freq_params));
 	hapd->cs_count = 0;
 	hapd->cs_block_tx = 0;
@@ -2839,6 +2899,7 @@ void hostapd_cleanup_cs_params(struct hostapd_data *hapd)
 int hostapd_switch_channel(struct hostapd_data *hapd,
 			   struct csa_settings *settings)
 {
+	printf("[KBCHEA] hostapd hostapd_switch_channel");
 	int ret;
 
 	if (!(hapd->iface->drv_flags & WPA_DRIVER_FLAGS_AP_CSA)) {
@@ -2869,6 +2930,7 @@ void
 hostapd_switch_channel_fallback(struct hostapd_iface *iface,
 				const struct hostapd_freq_params *freq_params)
 {
+	printf("[KBCHEA] hostapd hostapd_switch_channel_fallback");
 	int vht_seg0_idx = 0, vht_seg1_idx = 0, vht_bw = VHT_CHANWIDTH_USE_HT;
 	unsigned int i;
 
@@ -2924,6 +2986,7 @@ hostapd_switch_channel_fallback(struct hostapd_iface *iface,
 struct hostapd_data * hostapd_get_iface(struct hapd_interfaces *interfaces,
 					const char *ifname)
 {
+	printf("[KBCHEA] hostapd hostapd_get_iface");
 	size_t i, j;
 
 	for (i = 0; i < interfaces->count; i++) {
@@ -2945,6 +3008,7 @@ struct hostapd_data * hostapd_get_iface(struct hapd_interfaces *interfaces,
 
 void hostapd_periodic_iface(struct hostapd_iface *iface)
 {
+	printf("[KBCHEA] hostapd hostapd_periodic_iface");
 	size_t i;
 
 	ap_list_timer(iface);

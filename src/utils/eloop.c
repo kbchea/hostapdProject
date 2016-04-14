@@ -826,6 +826,7 @@ static void eloop_handle_signal(int sig)
 
 static void eloop_process_pending_signals(void)
 {
+	printf("[KBCHEA] eloop 829 eloop_process_pending_signals");
 	int i;
 
 	if (eloop.signaled == 0)
@@ -852,6 +853,7 @@ static void eloop_process_pending_signals(void)
 int eloop_register_signal(int sig, eloop_signal_handler handler,
 			  void *user_data)
 {
+	printf("[KBCHEA] eloop 856 eloop_register_signal");
 	struct eloop_signal *tmp;
 
 	tmp = os_realloc_array(eloop.signals, eloop.signal_count + 1,
@@ -874,6 +876,7 @@ int eloop_register_signal(int sig, eloop_signal_handler handler,
 int eloop_register_signal_terminate(eloop_signal_handler handler,
 				    void *user_data)
 {
+	printf("[KBCHEA] eloop 879 eloop_register_signal_terminate");
 	int ret = eloop_register_signal(SIGINT, handler, user_data);
 	if (ret == 0)
 		ret = eloop_register_signal(SIGTERM, handler, user_data);
@@ -884,6 +887,7 @@ int eloop_register_signal_terminate(eloop_signal_handler handler,
 int eloop_register_signal_reconfig(eloop_signal_handler handler,
 				   void *user_data)
 {
+	printf("[KBCHEA] eloop 890 eloop_register_signal_reconfig");
 #ifdef CONFIG_NATIVE_WINDOWS
 	return 0;
 #else /* CONFIG_NATIVE_WINDOWS */
@@ -894,6 +898,7 @@ int eloop_register_signal_reconfig(eloop_signal_handler handler,
 
 void eloop_run(void)
 {
+	printf("[KBCHEA] eloop 897 eloop_run");
 #ifdef CONFIG_ELOOP_POLL
 	int num_poll_fds;
 	int timeout_ms = 0;
@@ -1055,12 +1060,15 @@ out:
 
 void eloop_terminate(void)
 {
+	printf("[KBCHEA] eloop 1063 eloop_terminate");
+
 	eloop.terminate = 1;
 }
 
 
 void eloop_destroy(void)
 {
+	printf("[KBCHEA] eloop 1071 eloop_destroy");
 	struct eloop_timeout *timeout, *prev;
 	struct os_reltime now;
 
@@ -1102,6 +1110,7 @@ void eloop_destroy(void)
 
 int eloop_terminated(void)
 {
+	printf("[KBCHEA] eloop 1113 eloop_terminated");
 	return eloop.terminate || eloop.pending_terminate;
 }
 

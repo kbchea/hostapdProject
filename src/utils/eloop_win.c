@@ -437,6 +437,7 @@ static void eloop_handle_signal(int sig)
 
 static void eloop_process_pending_signals(void)
 {
+	printf("[KBCHEA] eloop_win 440 eloop_process_pending_signals");
 	int i;
 
 	if (eloop.signaled == 0)
@@ -466,6 +467,7 @@ static void eloop_process_pending_signals(void)
 int eloop_register_signal(int sig, eloop_signal_handler handler,
 			  void *user_data)
 {
+	printf("[KBCHEA] eloop_win 470 eloop_register_signal");
 	struct eloop_signal *tmp;
 
 	tmp = os_realloc_array(eloop.signals, eloop.signal_count + 1,
@@ -506,6 +508,7 @@ static BOOL eloop_handle_console_ctrl(DWORD type)
 int eloop_register_signal_terminate(eloop_signal_handler handler,
 				    void *user_data)
 {
+	printf("[KBCHEA] eloop_win 511 eloop_register_signal_terminate");
 #ifndef _WIN32_WCE
 	if (SetConsoleCtrlHandler((PHANDLER_ROUTINE) eloop_handle_console_ctrl,
 				  TRUE) == 0) {
@@ -532,6 +535,7 @@ int eloop_register_signal_reconfig(eloop_signal_handler handler,
 
 void eloop_run(void)
 {
+	printf("[KBCHEA] eloop_win 535 eloop_run");
 	struct os_reltime tv, now;
 	DWORD count, ret, timeout_val, err;
 	size_t i;
@@ -642,6 +646,7 @@ void eloop_run(void)
 
 void eloop_terminate(void)
 {
+	printf("[KBCHEA] eloop_win 649 eloop_terminate");
 	eloop.terminate = 1;
 	SetEvent(eloop.term_event);
 }
@@ -649,6 +654,7 @@ void eloop_terminate(void)
 
 void eloop_destroy(void)
 {
+	printf("[KBCHEA] eloop_win 657 eloop_destroy");
 	struct eloop_timeout *timeout, *prev;
 
 	dl_list_for_each_safe(timeout, prev, &eloop.timeout,
@@ -668,6 +674,7 @@ void eloop_destroy(void)
 
 int eloop_terminated(void)
 {
+	printf("[KBCHEA] eloop_win 677 eloop_terminated");
 	return eloop.terminate;
 }
 

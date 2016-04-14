@@ -148,6 +148,7 @@ static void hostapd_logger_cb(void *ctx, const u8 *addr, unsigned int module,
  */
 static int hostapd_driver_init(struct hostapd_iface *iface)
 {
+	printf("[KBCHEA] main 151 hostapd_driver_init");
 	struct wpa_init_params params;
 	size_t i;
 	struct hostapd_data *hapd = iface->bss[0];
@@ -244,6 +245,7 @@ static struct hostapd_iface *
 hostapd_interface_init(struct hapd_interfaces *interfaces,
 		       const char *config_fname, int debug)
 {
+	printf("[KBCHEA] main 248 hostapd_interface_init");
 	struct hostapd_iface *iface;
 	int k;
 
@@ -275,6 +277,7 @@ hostapd_interface_init(struct hapd_interfaces *interfaces,
  */
 static void handle_term(int sig, void *signal_ctx)
 {
+	printf("[KBCHEA] main 280 handle_term");
 	wpa_printf(MSG_DEBUG, "Signal %d received - terminating", sig);
 	eloop_terminate();
 }
@@ -297,6 +300,7 @@ static int handle_reload_iface(struct hostapd_iface *iface, void *ctx)
  */
 static void handle_reload(int sig, void *signal_ctx)
 {
+	printf("[KBCHEA] main 303 handle_reload");
 	struct hapd_interfaces *interfaces = signal_ctx;
 	wpa_printf(MSG_DEBUG, "Signal %d received - reloading configuration",
 		   sig);
@@ -314,6 +318,7 @@ static void handle_dump_state(int sig, void *signal_ctx)
 static int hostapd_global_init(struct hapd_interfaces *interfaces,
 			       const char *entropy_file)
 {
+	printf("[KBCHEA] main 317 hostapd_global_init");
 	int i;
 
 	os_memset(&global, 0, sizeof(global));
@@ -358,6 +363,7 @@ static int hostapd_global_init(struct hapd_interfaces *interfaces,
 
 static void hostapd_global_deinit(const char *pid_file)
 {
+	printf("[KBCHEA] main 366 hostapd_global_deinit");
 	int i;
 
 	for (i = 0; wpa_drivers[i] && global.drv_priv; i++) {
@@ -389,7 +395,10 @@ static void hostapd_global_deinit(const char *pid_file)
 static int hostapd_global_run(struct hapd_interfaces *ifaces, int daemonize,
 			      const char *pid_file)
 {
+	printf("[KBCHEA] main 392 hostapd_global_run");
 #ifdef EAP_SERVER_TNC
+
+	printf("[KBCHEA] main 392 hostapd_global_run ifdef EAP_SERVER_TNC");
 	int tnc = 0;
 	size_t i, k;
 
@@ -476,6 +485,7 @@ static const char * hostapd_msg_ifname_cb(void *ctx)
 static int hostapd_get_global_ctrl_iface(struct hapd_interfaces *interfaces,
 					 const char *path)
 {
+	printf("[KBCHEA] main 488 hostapd_get_global_ctrl_iface");
 	char *pos;
 	os_free(interfaces->global_iface_path);
 	interfaces->global_iface_path = os_strdup(path);
@@ -500,6 +510,7 @@ static int hostapd_get_global_ctrl_iface(struct hapd_interfaces *interfaces,
 static int hostapd_get_ctrl_iface_group(struct hapd_interfaces *interfaces,
 					const char *group)
 {
+	printf("[KBCHEA] main 513 hostapd_get_ctrl_iface_group");
 #ifndef CONFIG_NATIVE_WINDOWS
 	struct group *grp;
 	grp = getgrnam(group);
@@ -516,6 +527,7 @@ static int hostapd_get_ctrl_iface_group(struct hapd_interfaces *interfaces,
 #ifdef CONFIG_WPS
 static int gen_uuid(const char *txt_addr)
 {
+	printf("[KBCHEA] main 530 gen_uuid");
 	u8 addr[ETH_ALEN];
 	u8 uuid[UUID_LEN];
 	char buf[100];
@@ -540,6 +552,7 @@ static int gen_uuid(const char *txt_addr)
 
 static int hostapd_periodic_call(struct hostapd_iface *iface, void *ctx)
 {
+	printf("[KBCHEA] main 555 hostapd_periodic_call");
 	hostapd_periodic_iface(iface);
 	return 0;
 }
@@ -548,6 +561,7 @@ static int hostapd_periodic_call(struct hostapd_iface *iface, void *ctx)
 /* Periodic cleanup tasks */
 static void hostapd_periodic(void *eloop_ctx, void *timeout_ctx)
 {
+	printf("[KBCHEA] main 564 hostapd_periodic");
 	struct hapd_interfaces *interfaces = eloop_ctx;
 
 	eloop_register_timeout(HOSTAPD_CLEANUP_INTERVAL, 0,
@@ -558,6 +572,7 @@ static void hostapd_periodic(void *eloop_ctx, void *timeout_ctx)
 
 int main(int argc, char *argv[])
 {
+	printf("[KBCHEA] main 575");
 	struct hapd_interfaces interfaces;
 	int ret = 1;
 	size_t i, j;
@@ -586,10 +601,14 @@ int main(int argc, char *argv[])
 	interfaces.global_ctrl_sock = -1;
 	interfaces.global_ctrl_dst = NULL;
 
+
 	for (;;) {
 		c = getopt(argc, argv, "b:Bde:f:hKP:Ttu:vg:G:");
 		if (c < 0)
 			break;
+
+		printf("[KBCHEA] main 592 main %s", c);
+
 		switch (c) {
 		case 'h':
 			usage();
