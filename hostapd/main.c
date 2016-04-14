@@ -191,6 +191,14 @@ static int hostapd_driver_init(struct hostapd_iface *iface)
 
 	params.num_bridge = hapd->iface->num_bss;
 	params.bridge = os_calloc(hapd->iface->num_bss, sizeof(char *));
+
+	printf("[KBCHEA] main hostapd_driver_init params.bssid : %s", params.bssid);
+	printf("[KBCHEA] main hostapd_driver_init params.ifname : %s", params.ifname);
+	printf("[KBCHEA] main hostapd_driver_init params.driver_params : %s", params.driver_params);
+	printf("[KBCHEA] main hostapd_driver_init params.use_pae_group_addr : %s", params.use_pae_group_addr);
+	printf("[KBCHEA] main hostapd_driver_init params.num_bridge : %s", params.num_bridge);
+	printf("[KBCHEA] main hostapd_driver_init params.bridge : %s", params.bridge);
+
 	if (params.bridge == NULL)
 		return -1;
 	for (i = 0; i < hapd->iface->num_bss; i++) {
@@ -201,6 +209,7 @@ static int hostapd_driver_init(struct hostapd_iface *iface)
 
 	params.own_addr = hapd->own_addr;
 
+	printf("[KBCHEA] main hostapd_driver_init params.own_addr : %s", params.own_addr);
 	hapd->drv_priv = hapd->driver->hapd_init(hapd, &params);
 	os_free(params.bridge);
 	if (hapd->drv_priv == NULL) {
@@ -822,3 +831,4 @@ int main(int argc, char *argv[])
 
 	return ret;
 }
+
